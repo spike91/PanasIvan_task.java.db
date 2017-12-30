@@ -165,25 +165,14 @@ CLASSWORLDS_LAUNCHER=org.codehaus.plexus.classworlds.launcher.Launcher
 # traverses directory structure from process work directory to filesystem root
 # first directory with .mvn subdirectory is considered project base directory
 find_maven_basedir() {
-
-  if [ -z "$1" ]
-  then
-    echo "Path not specified to find_maven_basedir"
-    return 1
-  fi
-
-  basedir="$1"
-  wdir="$1"
+  local basedir=$(pwd)
+  local wdir=$(pwd)
   while [ "$wdir" != '/' ] ; do
     if [ -d "$wdir"/.mvn ] ; then
       basedir=$wdir
       break
     fi
-    # workaround for JBEAP-8937 (on Solaris 10/Sparc)
-    if [ -d "${wdir}" ]; then
-      wdir=`cd "$wdir/.."; pwd`
-    fi
-    # end of workaround
+    wdir=$(cd "$wdir/.."; pwd)
   done
   echo "${basedir}"
 }
@@ -195,13 +184,7 @@ concat_lines() {
   fi
 }
 
-BASE_DIR=`find_maven_basedir "$(pwd)"`
-if [ -z "$BASE_DIR" ]; then
-  exit 1;
-fi
-
-export MAVEN_PROJECTBASEDIR=${MAVEN_BASEDIR:-"$BASE_DIR"}
-echo $MAVEN_PROJECTBASEDIR
+export MAVEN_PROJECTBASEDIR=${MAVEN_BASEDIR:-$(find_maven_basedir)}
 MAVEN_OPTS="$(concat_lines "$MAVEN_PROJECTBASEDIR/.mvn/jvm.config") $MAVEN_OPTS"
 
 # For Cygwin, switch paths to Windows format before running java
@@ -216,8 +199,14 @@ if $cygwin; then
     MAVEN_PROJECTBASEDIR=`cygpath --path --windows "$MAVEN_PROJECTBASEDIR"`
 fi
 
+# Provide a "standardized" way to retrieve the CLI args that will
+# work with both Windows and non-Windows executions.
+MAVEN_CMD_LINE_ARGS="$MAVEN_CONFIG $@"
+export MAVEN_CMD_LINE_ARGS
+
 WRAPPER_LAUNCHER=org.apache.maven.wrapper.MavenWrapperMain
 
+# avoid using MAVEN_CMD_LINE_ARGS below since that would loose parameter escaping in $@
 exec "$JAVACMD" \
   $MAVEN_OPTS \
   -classpath "$MAVEN_PROJECTBASEDIR/.mvn/wrapper/maven-wrapper.jar" \
