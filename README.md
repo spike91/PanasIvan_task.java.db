@@ -21,8 +21,7 @@ Hindamise ajal hinnatakse ka kasutajaliidest ja andmete validatsioon.
 
 ## To run, just clone it then..
 
-    mvn spring-boot:run  
-
+    .\mvnw spring-boot:run
 
 ## Features:
 
