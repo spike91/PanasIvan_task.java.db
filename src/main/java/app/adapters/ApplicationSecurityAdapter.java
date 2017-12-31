@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -14,6 +15,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import app.services.UserService;
 
 @Configuration
+@EnableWebSecurity
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class ApplicationSecurityAdapter extends WebSecurityConfigurerAdapter {
     @Autowired
@@ -28,6 +30,10 @@ public class ApplicationSecurityAdapter extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+        .antMatchers("/").permitAll()
+        .antMatchers("/course/edit/*").access("hasRole('ROLE_ADMIN')")
+        .antMatchers("/course/edit").access("hasRole('ROLE_ADMIN')")
+        .antMatchers("/course/*").permitAll()
         .antMatchers("/user/register").permitAll()
         .antMatchers("/user/activate").permitAll()
         .antMatchers("/user/activation-send").permitAll()
@@ -38,6 +44,7 @@ public class ApplicationSecurityAdapter extends WebSecurityConfigurerAdapter {
         .antMatchers("/img/**").permitAll()
         .antMatchers("/images/**").permitAll()
         .antMatchers("/fonts/**").permitAll()
+        .antMatchers("/console/**").permitAll()
         .anyRequest().authenticated()
         .and()
             .formLogin().loginPage("/login").failureUrl("/login?error").permitAll()
@@ -46,6 +53,9 @@ public class ApplicationSecurityAdapter extends WebSecurityConfigurerAdapter {
         .and()
             .rememberMe().key(applicationSecret)
             .tokenValiditySeconds(31536000);
+
+            http.csrf().disable();
+            http.headers().frameOptions().disable();
     }
     
     @Override

@@ -48,4 +48,8 @@ public class Course extends Model {
     public void setUsers(Set<User> users) {
         this.users = users;
     }
+
+    public boolean isUserExist(User user) {        
+        return user == null ? false : getUsers().contains(user);
+    }
 }

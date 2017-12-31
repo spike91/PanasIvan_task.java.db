@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorator="layout">
 <head>
-<title>HOME</title>
+<title>Courses</title>
 </head>
 <body>
     <div layout:fragment="content">
-        <h1>Welcome to Spring-starter</h1>
-        Index.html file, please your content here
-        <p>Check out the sample @RestController <a href="/sample/json">SampleController.java</a> but create some data first <a href="/sample/create?name=test">SampleController.java</a></p>
-        <div id="created" th:text="${#dates.format(date)}">May 11, 2015</div>
+            <div class="list-group">
+                        <h3 class="text-center">Course List</h3>
+                    <p th:each="course : ${courses}">
+                      <a th:href="@{|/course/${course.getId()}|}" class="list-group-item list-group-item-info" th:text="@{|${course.getTitle()} (${course.getCourseCode()})|}"></a>
+                    </p>
+            </div>
     </div>
 </body>
 </html>

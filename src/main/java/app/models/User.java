@@ -131,28 +131,12 @@ public class User {
         this.address = address;
     }
 
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
     public String getLastLogin() {
         return lastLogin;
     }
 
     public void setLastLogin(String lastLogin) {
         this.lastLogin = lastLogin;
-    }
-    
-    public String getProfilePicture() {
-        return profilePicture;
-    }
-
-    public void setProfilePicture(String profilePicture) {
-        this.profilePicture = profilePicture;
     }
 
     public Boolean isAdmin() {
@@ -161,5 +145,21 @@ public class User {
     
     public Boolean isMatchingPasswords() {
         return this.password.equals(this.confirmPassword);
+    }
+
+    public String getStudentCode() {
+        return studentCode;
+    }
+
+    public void setStudentCode(String studentCode) {
+        this.studentCode = studentCode;
+    }
+
+    public Set<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(Set<Course> courses) {
+        this.courses = courses;
     }
 }

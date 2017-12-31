@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorator="layout">
+<head>
+        <title>Course info and registration</title>
+</head>
+<body>
+    <div layout:fragment="content">
+            <div class="container-fluid">
+                    <div class="row-fluid">
+                <dl>
+                        <dt><h3>Title</h3></dt>
+                    <dd><h5 th:text="${course.getTitle()}"></h5></dd>
+                    <dt><h3>Description</h3></dt>
+                    <dd><h5 th:text="${course.getDescription()}"></h5></dd>
+                </dl>
+                    </div>
+                    <div class="row-fluid" sec:authorize="hasRole('ROLE_ADMIN')">
+                            <form  class="form-signin" th:action="@{|/course/edit/${course.getId()}|}" th:object="${course}" method="post">
+                                <button type="submit" class="btn btn-primary">Edit course info</button>
+                            </form>
+                    </div>   
+                &nbsp;
+                <div class="row-fluid">
+                <h4 class="text-center">Registered students:</h4>
+                <table class="table table-striped">
+                        <tr>
+                            <th>Firstname</th>
+                            <th>Lastname</th>
+                            <th>Student Code</th>
+                            <th>Student Email</th>
+                            <th sec:authorize="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')">Edit</th>
+                            <th sec:authorize="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')">Delete</th>
+                        </tr>
+                        <tr th:each="user : ${course.getUsers()}">
+                            <td th:text="${user.getFirstName()}"></td>
+                            <td th:text="${user.getLastName()}"></td>
+                            <td th:text="${user.getStudentCode()}"></td>
+                            <td th:text="${user.getEmail()}"></td>
+                            <td sec:authorize="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')"><a th:if="${g_user == user or g_user.isAdmin()}"  th:href="@{|/user/edit/${user.getId()}|}">Edit</a></td>
+                            <td sec:authorize="hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')"><a th:if="${g_user == user or g_user.isAdmin()}"  th:href="@{|/course/${course.getId()}/user/delete/${user.getId()}|}">Delete</a></td>
+                        </tr>
+                </table>
+                </div>   
+                <div class="row-fluid" th:if="${g_user}">
+                        <form  class="form-signin" th:action="@{|/course/${course.getId()}/user/register/${g_user.getId()}|}" th:object="${user}" method="post">
+                            <button type="submit" class="btn btn-primary">Register</button>
+                        </form>
+                </div>             
+            </div>
+    </div>
+</body>
+</html>

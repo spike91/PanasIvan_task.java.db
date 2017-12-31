@@ -19,14 +19,13 @@
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Spring-starter</a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a th:href="@{/user/reset-password}" href="reset">Reset Password</a></li>
-                    <li><a th:href="@{/user/register}" href="register">Register</a></li>
-                    <li><a th:href="@{/login}" href="login">Login</a></li>
-                    <li><a th:href="@{/logout}" href="logout"><i class="icon-chevron-left"></i>Logout</a></li>
+                    <li th:if="${g_user}"><a th:href="@{/user/reset-password}" href="reset">Reset Password</a></li>
+                    <li th:if="${g_user}"><a th:href="@{/logout}" href="logout"><i class="icon-chevron-left"></i>Logout</a></li>
+                    <li th:unless="${g_user}"><a th:href="@{/login}" href="login">Login</a></li>
+                    <li th:unless="${g_user}"><a th:href="@{/user/register}" href="register">Register</a></li>                    
                 </ul>
             </div>
         </div>
@@ -66,12 +65,12 @@
     </div>
     <!--/.container-->
 
-
-
-    <footer>
-        <p class="pull-right" th:if="${g_user}">
+    <p class="pull-right" th:if="${g_user}">
             Logged in as: <span th:text="${g_user.email}">my email</span>
         </p>
-    </footer>
+
+        <footer class="py-4 navbar-inverse" style="bottom: 0;position: fixed;width: 100%;">
+                <div class="h6 text-center" style="color: #dcdcdc;">Ivan Panas RDIR51</div>
+            </footer>
 </body>
 </html>

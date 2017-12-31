@@ -6,6 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,13 +17,17 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import app.Application;
 import app.models.User;
 import app.repositories.UserRepository;
 
 @Service
 public class UserService implements UserDetailsService {
+
+    @Autowired
+    UserRepository userRepository;
+
     @Value("${app.user.verification}")
     private Boolean requireActivation;
     
@@ -36,6 +41,20 @@ public class UserService implements UserDetailsService {
     private HttpSession httpSession;
     
     public final String CURRENT_USER_KEY = "CURRENT_USER";
+
+    public Iterable<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public User getUser(Long id){
+        return userRepository.findOne(id);
+    }
+
+    @Modifying
+    @Transactional
+    public void save(User user) {
+        userRepository.save(user).getId();
+    }
     
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -155,8 +174,7 @@ public class UserService implements UserDetailsService {
                 newData.getEmail(), 
                 newData.getFirstName(), 
                 newData.getLastName(), 
-                newData.getAddress(), 
-                newData.getCompanyName());
+                newData.getAddress());
     }
     
     public User getLoggedInUser() {
@@ -175,9 +193,5 @@ public class UserService implements UserDetailsService {
     
     public void updateLastLogin(String userName) {
         this.repo.updateLastLogin(userName);
-    }
-
-    public void updateProfilePicture(User user, String profilePicture) {
-        this.repo.updateProfilePicture(user.getUserName(), profilePicture);
     }
 }

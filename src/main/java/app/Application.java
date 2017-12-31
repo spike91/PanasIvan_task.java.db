@@ -27,21 +27,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @SpringBootApplication
-@Controller
 public class Application {
     
     public static Logger log = Logger.getLogger(Application.class.getName());
     
     public static void main(String[] args) throws Exception {
         SpringApplication.run(Application.class, args);
-    }
-
-    @RequestMapping("/")
-    public String home(Map<String, Object> model) {
-        model.put("message", "Hello World");
-        model.put("title", "Hello Home");
-        model.put("date", new Date());
-        return "index";
-    }
-    
+    }    
 }
