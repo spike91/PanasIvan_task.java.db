@@ -19,12 +19,12 @@ Admin redigeerib kõik andmed (kursuste ja tudengite info) (5 punkti)
 Hindamise ajal hinnatakse ka kasutajaliidest ja andmete validatsioon.
 
 
-##To run, just clone it then..
+## To run, just clone it then..
 
-    mvn spring-boot:run   (or run Application.java within eclipse)
+    mvn spring-boot:run  
 
 
-##Features:
+## Features:
 
 * User Registration
 * User Admin when ROLE_ADMIN
@@ -32,3 +32,7 @@ Hindamise ajal hinnatakse ka kasutajaliidest ja andmete validatsioon.
 * Admin can edit course info
 * User can edit one info
 * Admin can edit user's registration for the course
+
+## Used github project
+
+    https://github.com/ddalcu/spring-starter  
