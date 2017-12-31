@@ -19,9 +19,6 @@ import app.services.UserService;
 @Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class ApplicationSecurityAdapter extends WebSecurityConfigurerAdapter {
     @Autowired
-    private SecurityProperties security;
-
-    @Autowired
     private UserService userService;
     
     @Value("${app.secret}")
