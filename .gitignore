@@ -1,7 +1,6 @@
 /target/
 .project
 .vscode/
-.settings/
 *.log
 *.1
 config/
