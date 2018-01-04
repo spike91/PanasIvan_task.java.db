@@ -1,5 +1,4 @@
 /target/
-.project
 .vscode/
 *.log
 *.1
