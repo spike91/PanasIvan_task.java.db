@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" layout:decorator="layout">
+<head>
+<title>Courses</title>
+</head>
+<body>
+    <div layout:fragment="content">
+            <div class="list-group">
+                        <h3 class="text-center">Course List</h3>
+                    <p th:each="course : ${courses}">
+                      <a th:href="@{|/course/${course.getId()}|}" class="list-group-item list-group-item-info" th:text="@{|${course.getTitle()} (${course.getCourseCode()})|}"></a>
+                    </p>
+            </div>
+    </div>
+</body>
+</html>
